@@ -9,7 +9,7 @@
 import UIKit
 import RNCryptor //for encryption and decryption
 
-
+let defaults = UserDefaults.standard
 
 let encryptionKey = "53N2@C7@pX2"
 let loginpassword = "12345678"
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         //getting the data from the plain text
         let data:Data = plainText.data(using: .utf8)!
         
-        let encryptedData = try! RNCryptor.encrypt(data: data, withPassword: encryptionKey)
+        let encryptedData = try RNCryptor.encrypt(data: data, withPassword: encryptionKey)
         
         //making encrypted value as a string
         
@@ -62,7 +62,9 @@ class ViewController: UIViewController {
             return decryptedString ?? ""
             
         } catch {
+            
             return "Failed"
+            
         }
     }
     
@@ -74,40 +76,50 @@ class ViewController: UIViewController {
         
         let encryptedEmail = self.encrypt(plainText:loginemail , password: encryptionKey)
         
-          let encryptedPasword = self.encrypt(plainText:loginpassword , password: encryptionKey)
+        print(encryptedEmail)
+        
+        
+        
+        let encryptedPasword = self.encrypt(plainText:loginpassword , password: encryptionKey)
+        
+        print(encryptedPasword)
+        
+        
         
         //we save the encypted text to defaults
-        UserDefaults.standard.set(encryptedEmail, forKey: "email")
-         UserDefaults.standard.set(encryptedPasword, forKey: "password")
+        defaults.set(encryptedEmail, forKey: "email")
+        defaults.set(encryptedPasword, forKey: "password")
         
     }
     
     
     @IBAction func showDecryptedDataBtn(_ sender: UIButton) {
         
-        let emailOutput = UserDefaults.value(forKey: "email")
+        
+        let emailOutput = defaults.object(forKey:"email") as! String
+        
         print(emailOutput)
         
-        let passwordOutput = UserDefaults.value(forKey: "password")
+        let passwordOutput = defaults.object(forKey:"password") as! String
         print(passwordOutput)
         
         
         
         //====Decrypting
         
-        let decryptedEmail = self.decrypt(encryptedText: emailOutput as! String, password: encryptionKey)
+        let decryptedEmail = self.decrypt(encryptedText: emailOutput, password: encryptionKey)
         print(decryptedEmail)
         
         
         
-        let decryptedPassword = self.decrypt(encryptedText: passwordOutput as! String, password: encryptionKey)
+        let decryptedPassword = self.decrypt(encryptedText: passwordOutput, password: encryptionKey)
         
         print(decryptedPassword)
         
     }
     
     
-
-
+    
+    
 }
 
