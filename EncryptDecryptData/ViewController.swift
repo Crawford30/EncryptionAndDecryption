@@ -16,6 +16,7 @@ let loginpassword = "12345678"
 let loginemail = "test@gmail.com"
 
 class ViewController: UIViewController {
+    
     @IBOutlet weak var userNameTextField: UITextField!
     
     @IBOutlet weak var passwordTextField: UITextField!
@@ -26,13 +27,17 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    
+    
+    
+    
     //MARK:- ENCRYPT FUNC
     func encrypt(plainText: String, password: String) -> String {
         
         //getting the data from the plain text
         let data:Data = plainText.data(using: .utf8)!
         
-        let encryptedData = try RNCryptor.encrypt(data: data, withPassword: encryptionKey)
+        let encryptedData = try! RNCryptor.encrypt(data: data, withPassword: encryptionKey)
         
         //making encrypted value as a string
         
